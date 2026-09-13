@@ -205,21 +205,29 @@ body::before{
 .fpill:hover{color:var(--ink);border-color:var(--mut)}
 @media(max-width:680px){.fpill{min-height:44px}}
 .fpill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:980px){.grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:680px){.grid{grid-template-columns:repeat(2,1fr)}}
+/* MOSAICO, nao grade de quadro fixo.
+   As fotos dele vao de 0,51 (bem alta) a 1,90 (deitada). Com quadro de
+   tamanho fixo so havia escolha ruim: cortar a tatuagem, ou deixar tarja
+   preta grossa em volta. Em coluna, cada foto fica com a altura que tem.
+   columns e CSS puro -- nenhuma biblioteca de mosaico (regra 1). */
+.grid{columns:4;column-gap:14px}
+@media(max-width:980px){.grid{columns:3}}
+@media(max-width:680px){.grid{columns:2}}
+@media(max-width:420px){.grid{columns:1}}
 .tile{
   position:relative;border-radius:var(--r);overflow:hidden;background:var(--panel);
-  border:1px solid var(--line);aspect-ratio:1;
-  opacity:0;transform:translateY(-34px) rotate(.6deg);
+  border:1px solid var(--line);
+  /* sem aspect-ratio: a altura vem da foto */
+  break-inside:avoid;margin:0 0 14px;display:block;
+  opacity:0;transform:translateY(-22px);
   transition:opacity .6s ease,transform .6s cubic-bezier(.22,.9,.3,1.1),border-color .2s;
 }
 .tile.in{opacity:1;transform:none}
 .tile:hover{border-color:var(--mut)}
-/* contain, nao cover: se a foto nao for exatamente quadrada, cover come as
-   pontas. A tatuagem inteira vale mais que o quadro perfeito. */
+/* height:auto -- a foto manda na altura do quadro. Nada de object-fit
+   cortando ou deixando tarja: o quadro tem exatamente o tamanho da foto. */
 .tile img{
-  width:100%;height:100%;object-fit:contain;background:#0E0E11;
+  width:100%;height:auto;display:block;
   transition:filter .5s ease;
   filter:grayscale(12%);
 }
@@ -235,8 +243,63 @@ body::before{
   opacity:0;transform:translateY(6px);transition:all .25s ease;
 }
 .tile:hover .tile__tag{opacity:1;transform:none}
+/* dedo nao tem hover: em tela de toque a legenda fica sempre visivel, senao
+   ninguem no celular descobre o nome da peca */
+@media(hover:none){ .tile__tag{opacity:1;transform:none} }
 .tile__tag i{font-style:normal;color:var(--red);font-weight:700}
 .tile.hidden{display:none}
+/* o quadro inteiro e um botao: abre a foto grande. Precisa ser <button> de
+   verdade para funcionar no teclado e no leitor de tela. */
+.tile__btn{
+  display:block;width:100%;height:100%;padding:0;margin:0;border:0;
+  background:none;cursor:zoom-in;
+}
+.tile__btn:focus-visible{outline:2px solid var(--red);outline-offset:-2px}
+
+/* ============================================================
+   LUPA — a foto inteira, sem corte nenhum
+   <dialog> nativo de proposito: Esc, prender o foco dentro e devolver o
+   foco ao quadro clicado vem de graca e certo. Fazer na mao e onde esses
+   modais costumam quebrar.
+   ============================================================ */
+.lb{
+  border:0;padding:0;background:transparent;max-width:100vw;max-height:100vh;
+  width:100%;height:100%;overflow:hidden;
+}
+.lb::backdrop{background:rgba(6,6,8,.94)}
+.lb__in{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:clamp(12px,3vw,34px);
+}
+.lb__img{
+  max-width:100%;max-height:calc(100vh - 150px);width:auto;height:auto;
+  object-fit:contain;border-radius:var(--r);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.lb__cap{
+  display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:center;
+  font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#CFC9BC;
+  text-align:center;
+}
+.lb__cap i{font-style:normal;color:var(--red);font-weight:700}
+.lb__cap small{color:var(--mut);letter-spacing:.1em}
+.lb__x,.lb__nav{
+  position:fixed;z-index:2;min-width:48px;min-height:48px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(21,21,26,.9);border:1px solid var(--line);border-radius:50%;
+  color:var(--ink);cursor:pointer;font-size:22px;line-height:1;
+  font-family:var(--body);transition:border-color .15s,background .15s;
+}
+.lb__x:hover,.lb__nav:hover{border-color:var(--mut);background:var(--panel)}
+.lb__x:focus-visible,.lb__nav:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.lb__x{top:14px;right:14px;font-size:26px}
+.lb__prev{left:14px;top:50%;transform:translateY(-50%)}
+.lb__next{right:14px;top:50%;transform:translateY(-50%)}
+@media(max-width:680px){
+  /* no celular as setas no meio ficam por cima da tatuagem — descem pro pe */
+  .lb__prev,.lb__next{top:auto;bottom:16px;transform:none}
+  .lb__img{max-height:calc(100vh - 190px)}
+}
 .grid-note{margin-top:18px;font-size:12.5px;color:var(--mut)}
 .grid-note a{color:var(--ink)}
 
@@ -487,27 +550,27 @@ body::before{
       <button class="fpill" aria-pressed="false" data-f="her">Heraldry &amp; Knights</button>
     </div>
 
-    <div class="grid" id="grid"><figure class="tile" data-s="bg"><img src="img/g34.webp" alt="Norse back piece — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Norse back piece</span><i>Black &amp; Grey</i></figcaption></figure>
-<figure class="tile" data-s="her"><img src="img/g17.webp" alt="Family crest — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Family crest</span><i>Heraldry</i></figcaption></figure>
-<figure class="tile" data-s="bg"><img src="img/g44.webp" alt="Kraken across the ribs — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="639" height="639"><figcaption class="tile__tag"><span>Kraken across the ribs</span><i>Black &amp; Grey</i></figcaption></figure>
-<figure class="tile" data-s="col"><img src="img/g36.webp" alt="Green dragon — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Green dragon</span><i>Colour</i></figcaption></figure>
-<figure class="tile" data-s="bg"><img src="img/g31.webp" alt="Knight in full armour — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Knight in full armour</span><i>Black &amp; Grey</i></figcaption></figure>
-<figure class="tile" data-s="col"><img src="img/g55.webp" alt="Geisha — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Geisha</span><i>Colour</i></figcaption></figure>
-<figure class="tile" data-s="bg"><img src="img/g30.webp" alt="Lighthouse in the storm — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Lighthouse in the storm</span><i>Black &amp; Grey</i></figcaption></figure>
-<figure class="tile" data-s="her"><img src="img/g19.webp" alt="Maltese cross and helmet — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Maltese cross and helmet</span><i>Heraldry</i></figcaption></figure>
-<figure class="tile" data-s="col"><img src="img/g42.webp" alt="Roses, red and grey — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Roses, red and grey</span><i>Colour</i></figcaption></figure>
-<figure class="tile" data-s="por"><img src="img/g26.webp" alt="Portrait on the chest — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="639" height="639"><figcaption class="tile__tag"><span>Portrait on the chest</span><i>Portrait</i></figcaption></figure>
-<figure class="tile" data-s="bg"><img src="img/g22.webp" alt="Eagle and compass sleeve — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Eagle and compass sleeve</span><i>Black &amp; Grey</i></figcaption></figure>
-<figure class="tile" data-s="col"><img src="img/g63.webp" alt="Buddha — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Buddha</span><i>Colour</i></figcaption></figure>
-<figure class="tile" data-s="her"><img src="img/g18.webp" alt="Maple leaf shield — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Maple leaf shield</span><i>Heraldry</i></figcaption></figure>
-<figure class="tile" data-s="por"><img src="img/g15.webp" alt="Portrait in black &amp; grey — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="603" height="603"><figcaption class="tile__tag"><span>Portrait in black &amp; grey</span><i>Portrait</i></figcaption></figure>
-<figure class="tile" data-s="col"><img src="img/g53.webp" alt="The reaper — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>The reaper</span><i>Colour</i></figcaption></figure>
-<figure class="tile" data-s="bg"><img src="img/g06.webp" alt="Anubis and the knight — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="639" height="639"><figcaption class="tile__tag"><span>Anubis and the knight</span><i>Black &amp; Grey</i></figcaption></figure>
-<figure class="tile" data-s="por"><img src="img/g61.webp" alt="Catrina — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Catrina</span><i>Portrait</i></figcaption></figure>
-<figure class="tile" data-s="her"><img src="img/g21.webp" alt="Knight's armour sleeve — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Knight's armour sleeve</span><i>Heraldry</i></figcaption></figure>
-<figure class="tile" data-s="col"><img src="img/g62.webp" alt="Lily — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Lily</span><i>Colour</i></figcaption></figure>
-<figure class="tile" data-s="bg"><img src="img/g12.webp" alt="Palm trees on the calf — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Palm trees on the calf</span><i>Black &amp; Grey</i></figcaption></figure>
-<figure class="tile" data-s="por"><img src="img/g25.webp" alt="Portrait — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Portrait</span><i>Portrait</i></figcaption></figure></div>
+    <div class="grid" id="grid"><figure class="tile" data-s="bg" data-t="Norse back piece" data-l="Black &amp; Grey" data-full="img/full/g34.webp"><button class="tile__btn" type="button" aria-label="Open photo: Norse back piece"><img src="img/g34.webp" alt="Norse back piece — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Norse back piece</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="her" data-t="Family crest" data-l="Heraldry" data-full="img/full/g17.webp"><button class="tile__btn" type="button" aria-label="Open photo: Family crest"><img src="img/g17.webp" alt="Family crest — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Family crest</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="bg" data-t="Kraken across the ribs" data-l="Black &amp; Grey" data-full="img/full/g44.webp"><button class="tile__btn" type="button" aria-label="Open photo: Kraken across the ribs"><img src="img/g44.webp" alt="Kraken across the ribs — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Kraken across the ribs</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="col" data-t="Green dragon" data-l="Colour" data-full="img/full/g36.webp"><button class="tile__btn" type="button" aria-label="Open photo: Green dragon"><img src="img/g36.webp" alt="Green dragon — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Green dragon</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg" data-t="Knight in full armour" data-l="Black &amp; Grey" data-full="img/full/g31.webp"><button class="tile__btn" type="button" aria-label="Open photo: Knight in full armour"><img src="img/g31.webp" alt="Knight in full armour — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Knight in full armour</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="col" data-t="Geisha" data-l="Colour" data-full="img/full/g55.webp"><button class="tile__btn" type="button" aria-label="Open photo: Geisha"><img src="img/g55.webp" alt="Geisha — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Geisha</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg" data-t="Lighthouse in the storm" data-l="Black &amp; Grey" data-full="img/full/g30.webp"><button class="tile__btn" type="button" aria-label="Open photo: Lighthouse in the storm"><img src="img/g30.webp" alt="Lighthouse in the storm — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Lighthouse in the storm</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="her" data-t="Maltese cross and helmet" data-l="Heraldry" data-full="img/full/g19.webp"><button class="tile__btn" type="button" aria-label="Open photo: Maltese cross and helmet"><img src="img/g19.webp" alt="Maltese cross and helmet — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Maltese cross and helmet</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="col" data-t="Roses, red and grey" data-l="Colour" data-full="img/full/g42.webp"><button class="tile__btn" type="button" aria-label="Open photo: Roses, red and grey"><img src="img/g42.webp" alt="Roses, red and grey — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Roses, red and grey</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="por" data-t="Portrait on the chest" data-l="Portrait" data-full="img/full/g26.webp"><button class="tile__btn" type="button" aria-label="Open photo: Portrait on the chest"><img src="img/g26.webp" alt="Portrait on the chest — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Portrait on the chest</span><i>Portrait</i></figcaption></figure>
+<figure class="tile" data-s="bg" data-t="Eagle and compass sleeve" data-l="Black &amp; Grey" data-full="img/full/g22.webp"><button class="tile__btn" type="button" aria-label="Open photo: Eagle and compass sleeve"><img src="img/g22.webp" alt="Eagle and compass sleeve — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Eagle and compass sleeve</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="col" data-t="Buddha" data-l="Colour" data-full="img/full/g63.webp"><button class="tile__btn" type="button" aria-label="Open photo: Buddha"><img src="img/g63.webp" alt="Buddha — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Buddha</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="her" data-t="Maple leaf shield" data-l="Heraldry" data-full="img/full/g18.webp"><button class="tile__btn" type="button" aria-label="Open photo: Maple leaf shield"><img src="img/g18.webp" alt="Maple leaf shield — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Maple leaf shield</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="por" data-t="Portrait in black &amp; grey" data-l="Portrait" data-full="img/full/g15.webp"><button class="tile__btn" type="button" aria-label="Open photo: Portrait in black &amp; grey"><img src="img/g15.webp" alt="Portrait in black &amp; grey — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Portrait in black &amp; grey</span><i>Portrait</i></figcaption></figure>
+<figure class="tile" data-s="col" data-t="The reaper" data-l="Colour" data-full="img/full/g53.webp"><button class="tile__btn" type="button" aria-label="Open photo: The reaper"><img src="img/g53.webp" alt="The reaper — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>The reaper</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg" data-t="Anubis and the knight" data-l="Black &amp; Grey" data-full="img/full/g06.webp"><button class="tile__btn" type="button" aria-label="Open photo: Anubis and the knight"><img src="img/g06.webp" alt="Anubis and the knight — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="530" height="760"></button><figcaption class="tile__tag"><span>Anubis and the knight</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="por" data-t="Catrina" data-l="Portrait" data-full="img/full/g61.webp"><button class="tile__btn" type="button" aria-label="Open photo: Catrina"><img src="img/g61.webp" alt="Catrina — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Catrina</span><i>Portrait</i></figcaption></figure>
+<figure class="tile" data-s="her" data-t="Knight's armour sleeve" data-l="Heraldry" data-full="img/full/g21.webp"><button class="tile__btn" type="button" aria-label="Open photo: Knight's armour sleeve"><img src="img/g21.webp" alt="Knight's armour sleeve — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="608" height="760"></button><figcaption class="tile__tag"><span>Knight's armour sleeve</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="col" data-t="Lily" data-l="Colour" data-full="img/full/g62.webp"><button class="tile__btn" type="button" aria-label="Open photo: Lily"><img src="img/g62.webp" alt="Lily — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="760" height="760"></button><figcaption class="tile__tag"><span>Lily</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg" data-t="Palm trees on the calf" data-l="Black &amp; Grey" data-full="img/full/g12.webp"><button class="tile__btn" type="button" aria-label="Open photo: Palm trees on the calf"><img src="img/g12.webp" alt="Palm trees on the calf — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="570" height="760"></button><figcaption class="tile__tag"><span>Palm trees on the calf</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="por" data-t="Portrait" data-l="Portrait" data-full="img/full/g25.webp"><button class="tile__btn" type="button" aria-label="Open photo: Portrait"><img src="img/g25.webp" alt="Portrait — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="570" height="760"></button><figcaption class="tile__tag"><span>Portrait</span><i>Portrait</i></figcaption></figure></div>
 
     <p class="grid-note">The full archive lives on <a href="https://www.instagram.com/inkredible_ghiller_tattoo/" target="_blank" rel="noopener noreferrer">Instagram @inkredible_ghiller_tattoo</a> and on <a href="https://www.facebook.com/ghillertattoo/" target="_blank" rel="noopener noreferrer">Facebook</a>.</p>
   </div>
@@ -715,6 +778,16 @@ body::before{
   </div>
 </footer>
 
+<dialog class="lb" id="lb" aria-label="Tattoo photo, full size">
+  <div class="lb__in">
+    <img class="lb__img" id="lbImg" alt="">
+    <p class="lb__cap"><span id="lbTitle"></span><i id="lbStyle"></i><small id="lbCount"></small></p>
+  </div>
+  <button class="lb__x"   id="lbClose" type="button" aria-label="Close">&times;</button>
+  <button class="lb__nav lb__prev" id="lbPrev" type="button" aria-label="Previous photo">&lsaquo;</button>
+  <button class="lb__nav lb__next" id="lbNext" type="button" aria-label="Next photo">&rsaquo;</button>
+</dialog>
+
 <a class="fab" id="fabWa" href="https://wa.me/35699896698" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
   <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C9.4 3 4 8.3 4 14.9c0 2.6.8 5 2.3 7L4 29l7.3-2.2c1.5.8 3.1 1.2 4.7 1.2 6.6 0 12-5.3 12-11.9C28 8.3 22.6 3 16 3zm0 21.8c-1.5 0-3-.4-4.3-1.1l-.3-.2-4.3 1.3 1.3-4.1-.2-.3c-1.4-1.7-2.1-3.8-2.1-5.9 0-5.5 4.5-9.9 10-9.9s10 4.4 10 9.9-4.5 10.3-10.1 10.3zm5.5-7.5c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.6.1-.2 0-.4 0-.6-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9.8.3 1.4.5 1.9.7.8.2 1.5.2 2 .1.6-.1 1.8-.8 2.1-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>
 </a>
@@ -854,6 +927,70 @@ $("#yy").textContent = new Date().getFullYear();
       if (match) t.classList.add("in");
     });
   }));
+})();
+
+/* ---------- lupa: clicar num quadro mostra a foto inteira ----------
+   O quadro do portfolio mostra a foto sem cortar, mas pequena. Aqui ela
+   aparece do tamanho que der na tela.
+   Usa <dialog> nativo: Esc fecha, o foco fica preso dentro enquanto aberto
+   e volta para o quadro clicado ao fechar -- tudo sem codigo meu. */
+(() => {
+  const lb = $("#lb");
+  if (!lb || !lb.showModal) return;          // navegador antigo: fica so a grade
+  const img = $("#lbImg"), tit = $("#lbTitle"), est = $("#lbStyle"), cnt = $("#lbCount");
+  let lista = [], i = 0;
+
+  const visiveis = () => $$("#grid .tile:not(.hidden)");
+
+  const mostrar = (n) => {
+    i = (n + lista.length) % lista.length;   // vira a volta nas pontas
+    const f = lista[i], im = f.querySelector("img");
+    /* a copia GRANDE so e baixada aqui. O mosaico carrega a leve -- servir
+       1080px num quadro de 200px seria mandar 5x mais byte do que a tela usa,
+       e quem abre o site na rua paga isso em 4G. */
+    img.src = f.dataset.full || im.currentSrc || im.src;
+    img.alt = im.alt;
+    tit.textContent = f.dataset.t || "";
+    est.textContent = f.dataset.l || "";
+    cnt.textContent = (i + 1) + " / " + lista.length;
+    const um = lista.length < 2;
+    $("#lbPrev").hidden = um;
+    $("#lbNext").hidden = um;
+  };
+
+  const abrir = (f) => {
+    lista = visiveis();                       // segue o filtro que estiver ligado
+    const n = lista.indexOf(f);
+    if (n < 0) return;
+    mostrar(n);
+    lb.showModal();
+  };
+
+  $$("#grid .tile__btn").forEach(b => {
+    b.addEventListener("click", () => abrir(b.closest(".tile")));
+  });
+  /* fechar passa por aqui, nao direto pelo lb.close():
+     o evento "close" do <dialog> NAO disparou no navegador embutido que usei
+     para testar (o dialog fechava, o evento nao vinha). Confiar nele deixaria
+     a imagem grande presa. Entao a limpeza acontece no caminho que eu controlo,
+     e o ouvinte de "close" fica so como reforco para Esc. */
+  const fechar = () => { lb.close(); img.removeAttribute("src"); };
+  $("#lbClose").addEventListener("click", fechar);
+  $("#lbPrev").addEventListener("click", () => mostrar(i - 1));
+  $("#lbNext").addEventListener("click", () => mostrar(i + 1));
+  lb.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft")  { e.preventDefault(); mostrar(i - 1); }
+    if (e.key === "ArrowRight") { e.preventDefault(); mostrar(i + 1); }
+  });
+  /* clicar no fundo escuro fecha. O <dialog> recebe o clique do ::backdrop
+     nele mesmo, entao basta conferir se o alvo foi o proprio dialog. */
+  lb.addEventListener("click", e => { if (e.target === lb) fechar(); });
+  /* Esc: o <dialog> fecha sozinho e dispara "cancel" antes do "close" */
+  lb.addEventListener("cancel", () => { img.removeAttribute("src"); });
+  /* solta a imagem ao fechar. removeAttribute, nao src="": string vazia faz
+     o navegador tratar a propria pagina como endereco da imagem e pedir de
+     novo o HTML inteiro. */
+  lb.addEventListener("close", () => { img.removeAttribute("src"); });
 })();
 
 /* ---------- formulario -> WhatsApp (nada e guardado) ---------- */
