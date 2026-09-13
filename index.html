@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Inkredible Ghiller Tattoo — Custom Tattoos in St Paul's Bay, Malta</title>
+<meta name="description" content="Custom tattoos by Joseph Ghiller on Mosta Road, St Paul's Bay. Colour and black &amp; grey, same studio since 2012. 4.7★ from 89 Google reviews.">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%230B0B0D"/><text x="32" y="43" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="%23E9E4DA" text-anchor="middle">G</text><rect x="14" y="48" width="36" height="3" fill="%23C1121F"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Pirata+One&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   INKREDIBLE GHILLER TATTOO — MVP de prospeccao
+   Estrutura e CSS herdados do site do D'n'A (que recusou).
+   Conteudo, fotos e dados sao deste cliente.
+
+   DIFERENCAS DELIBERADAS EM RELACAO AO DnA:
+   1. Fotos como ARQUIVO EXTERNO, nao base64. O DnA ficou com 988 KB
+      sendo 96% base64 -- nada aparece antes de baixar tudo.
+   2. Mapa com CARREGAR-AO-CLICAR. O do DnA puxava Leaflet do unpkg e
+      tiles do CartoDB no load, o que manda o IP do visitante pra fora
+      antes de ele clicar em nada. Malta e UE (regra 8 / GDPR).
+   3. Bloco INTEGRACOES existe e esta desligado (regra 6).
+   ============================================================ */
+:root{
+  --bg:#0B0B0D;
+  --bg2:#101014;
+  --panel:#15151A;
+  --line:#232329;
+  --ink:#E9E4DA;
+  --mut:#8E8779;
+  --red:#C1121F;
+  --red-d:#8f0e17;
+  --display:'Anton', Impact, sans-serif;
+  --body:'Inter', system-ui, sans-serif;
+  --black-letter:'Pirata One', Georgia, serif;
+  --max:1200px;
+  --pad:clamp(20px,5vw,52px);
+  --r:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.6;
+  overflow-x:hidden;
+}
+::selection{background:var(--red);color:#fff}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-weight:400;line-height:1}
+
+/* grao por cima de tudo — e o que da atmosfera a pagina */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.sec{padding:clamp(64px,10vw,110px) 0;position:relative;z-index:2}
+
+.eyebrow{
+  display:flex;align-items:center;gap:12px;
+  font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);
+  font-weight:700;margin-bottom:18px;
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--red)}
+.h2{
+  font-family:var(--display);
+  font-size:clamp(40px,7vw,84px);
+  text-transform:uppercase;letter-spacing:.01em;color:var(--ink);
+}
+.h2 em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--mut)}
+.lead{color:var(--mut);font-size:16px;max-width:62ch;margin-top:16px}
+.lead b{color:var(--ink);font-weight:600}
+
+/* ---------- aparecer ao rolar ---------- */
+.rev{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rev.in{opacity:1;transform:none}
+
+/* ============================================================
+   CABECALHO
+   ============================================================ */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  background:rgba(11,11,13,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.hdr__in{display:flex;align-items:center;justify-content:space-between;gap:18px;height:64px}
+.logo{display:flex;align-items:baseline;gap:10px;text-decoration:none;min-height:44px;align-content:center;flex-wrap:wrap}
+.logo__mark{font-family:var(--black-letter);font-size:27px;color:var(--ink);line-height:1;white-space:nowrap}
+.logo__mark span{color:var(--red)}
+.logo__sub{font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
+.nav{display:flex;gap:26px}
+.nav a{
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+  color:var(--mut);transition:color .15s;font-weight:600;
+}
+.nav a:hover{color:var(--ink)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--red);color:#fff;text-decoration:none;cursor:pointer;
+  font-family:var(--body);font-weight:700;font-size:13px;letter-spacing:.06em;
+  padding:13px 24px;border:0;border-radius:var(--r);
+  transition:transform .15s,background .15s,box-shadow .15s;
+  min-height:44px;
+}
+.btn:hover{background:#d81f2d;transform:translateY(-1px);box-shadow:0 10px 30px rgba(193,18,31,.35)}
+.btn--ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn--ghost:hover{background:var(--panel);box-shadow:none;border-color:var(--mut)}
+.hdr .btn{padding:11px 18px;min-height:44px}
+@media(max-width:840px){.nav{display:none}}
+/* celular: nome e mais longo que o do DnA, entao encolhe antes de espremer */
+@media(max-width:560px){
+  .logo__sub{display:none}
+  .logo__mark{font-size:22px}
+  .hdr .btn{padding:10px 14px;font-size:12px}
+}
+@media(max-width:380px){.logo__mark{font-size:19px}}
+
+/* ============================================================
+   TOPO
+   ============================================================ */
+.hero{
+  position:relative;min-height:100svh;display:flex;align-items:flex-end;
+  padding-top:110px;padding-bottom:clamp(40px,7vw,80px);z-index:2;
+}
+.hero__bg{position:absolute;inset:0;overflow:hidden}
+.hero__bg img{
+  width:100%;height:100%;object-fit:cover;object-position:50% 42%;
+  filter:grayscale(55%) contrast(1.05) brightness(.62);
+}
+.hero__bg::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg, rgba(11,11,13,.55) 0%, rgba(11,11,13,.15) 40%, rgba(11,11,13,.92) 88%),
+    linear-gradient(90deg, rgba(11,11,13,.88) 0%, rgba(11,11,13,.25) 55%, rgba(11,11,13,.35) 100%);
+}
+.hero__in{position:relative;width:100%}
+.hero__est{
+  font-family:var(--black-letter);font-size:clamp(19px,2.6vw,26px);color:var(--mut);
+  margin-bottom:6px;
+}
+.hero__est b{color:var(--red);font-weight:400}
+.h1{
+  font-family:var(--display);text-transform:uppercase;
+  font-size:clamp(56px,11vw,150px);
+  letter-spacing:.005em;color:var(--ink);
+}
+.h1 .stroke{color:transparent;-webkit-text-stroke:2px var(--ink)}
+.hero__tag{
+  margin-top:18px;max-width:52ch;color:#CBC5B8;font-size:clamp(15px,1.6vw,18px);
+}
+.hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+.hero__proof{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--line);background:rgba(21,21,26,.72);border-radius:999px;
+  padding:9px 16px;font-size:12.5px;color:var(--mut);font-weight:500;
+}
+.chip b{color:var(--ink);font-weight:700}
+.chip .star{color:#E8B430}
+
+/* ============================================================
+   FAIXA CORRENDO
+   ============================================================ */
+.marquee{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--bg2);overflow:hidden;position:relative;z-index:2;
+  padding:14px 0;
+}
+.marquee__track{display:flex;gap:0;width:max-content;animation:mq 30s linear infinite}
+.marquee__item{
+  font-family:var(--display);text-transform:uppercase;font-size:15px;letter-spacing:.22em;
+  color:var(--mut);padding:0 26px;white-space:nowrap;
+}
+.marquee__item::after{content:"✦";color:var(--red);margin-left:52px;font-size:12px}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ============================================================
+   PORTFOLIO — "a gaveta"
+   ============================================================ */
+.drawer-head{position:relative;margin-bottom:8px}
+.drawer-slot{
+  margin-top:26px;height:16px;border:1px solid var(--line);border-radius:8px;
+  background:linear-gradient(180deg,#1a1a20,#0e0e11);position:relative;
+}
+.drawer-slot::after{
+  content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:74px;height:5px;border-radius:3px;background:var(--line);
+}
+.drawer-note{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut);
+  margin-top:10px;
+}
+.filters{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0 30px}
+.fpill{
+  background:transparent;border:1px solid var(--line);color:var(--mut);cursor:pointer;
+  font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.05em;
+  padding:10px 17px;border-radius:999px;transition:all .16s;min-height:40px;
+}
+.fpill:hover{color:var(--ink);border-color:var(--mut)}
+@media(max-width:680px){.fpill{min-height:44px}}
+.fpill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px){.grid{grid-template-columns:repeat(2,1fr)}}
+.tile{
+  position:relative;border-radius:var(--r);overflow:hidden;background:var(--panel);
+  border:1px solid var(--line);aspect-ratio:1;
+  opacity:0;transform:translateY(-34px) rotate(.6deg);
+  transition:opacity .6s ease,transform .6s cubic-bezier(.22,.9,.3,1.1),border-color .2s;
+}
+.tile.in{opacity:1;transform:none}
+.tile:hover{border-color:var(--mut)}
+.tile img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s ease,filter .5s ease;
+  filter:grayscale(12%);
+}
+.tile:hover img{transform:scale(1.055);filter:grayscale(0)}
+.tile__tag{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:26px 12px 10px;
+  background:linear-gradient(transparent,rgba(8,8,10,.92));
+  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#CFC9BC;
+  display:flex;justify-content:space-between;gap:8px;
+  opacity:0;transform:translateY(6px);transition:all .25s ease;
+}
+.tile:hover .tile__tag{opacity:1;transform:none}
+.tile__tag i{font-style:normal;color:var(--red);font-weight:700}
+.tile.hidden{display:none}
+.grid-note{margin-top:18px;font-size:12.5px;color:var(--mut)}
+.grid-note a{color:var(--ink)}
+
+/* ============================================================
+   FAIXA — alugar cadeira
+   ============================================================ */
+.band{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band__in{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,5vw,64px);align-items:center}
+@media(max-width:860px){.band__in{grid-template-columns:1fr}}
+.band__ph{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.band__ph img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
+.band__stamp{
+  position:absolute;top:14px;left:14px;background:rgba(8,8,10,.8);border:1px solid var(--line);
+  border-radius:3px;padding:7px 12px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+}
+.checks{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:13px}
+.checks li{display:flex;gap:13px;color:#C9C3B6;font-size:15px;line-height:1.5}
+.checks li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--red);margin-top:8px}
+.checks b{color:var(--ink)}
+
+/* ============================================================
+   O ARTISTA
+   ============================================================ */
+.artist{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,70px);align-items:center}
+@media(max-width:860px){.artist{grid-template-columns:1fr}}
+.artist__ph{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.artist__ph img{width:100%;aspect-ratio:4/5;object-fit:cover;filter:grayscale(100%) contrast(1.05)}
+.artist__ph::after{
+  content:"INKREDIBLE GHILLER";position:absolute;right:14px;bottom:12px;
+  font-family:var(--display);font-size:12px;letter-spacing:.24em;color:rgba(233,228,218,.8);
+}
+.timeline{list-style:none;margin-top:26px;border-left:1px solid var(--line);padding-left:22px;display:flex;flex-direction:column;gap:15px}
+.timeline li{position:relative;font-size:14.5px;color:var(--mut);line-height:1.5}
+.timeline li::before{
+  content:"";position:absolute;left:-26.5px;top:7px;width:9px;height:9px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--red);
+}
+.timeline b{color:var(--ink);font-weight:600}
+.quote{
+  margin-top:26px;padding:18px 22px;border-left:3px solid var(--red);background:var(--panel);
+  border-radius:0 var(--r) var(--r) 0;color:#CBC5B8;font-size:15px;font-style:italic;
+}
+
+/* ============================================================
+   AVALIACOES
+   ============================================================ */
+.rev-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:26px;justify-content:space-between}
+.score{display:flex;align-items:baseline;gap:14px}
+.score__n{font-family:var(--display);font-size:clamp(64px,9vw,110px);color:var(--ink)}
+.score__d{font-size:13.5px;color:var(--mut);line-height:1.5}
+.score__d .star{color:#E8B430;letter-spacing:2px;font-size:15px}
+.rcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px}
+@media(max-width:860px){.rcards{grid-template-columns:1fr}}
+.rcard{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  padding:24px;display:flex;flex-direction:column;gap:14px;
+}
+.rcard p{color:#C9C3B6;font-size:14.5px;line-height:1.6}
+.rcard footer{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.rcard .star{color:#E8B430;font-size:13px;letter-spacing:2px}
+
+/* ============================================================
+   COMECAR (formulario -> WhatsApp)
+   ============================================================ */
+.start{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.start__in{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(30px,5vw,70px)}
+@media(max-width:900px){.start__in{grid-template-columns:1fr}}
+.form{
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:clamp(22px,3.5vw,34px);display:flex;flex-direction:column;gap:16px;
+}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.f-row{grid-template-columns:1fr}}
+.f-field{display:flex;flex-direction:column;gap:7px}
+.f-field label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.f-field input,.f-field select,.f-field textarea{
+  background:var(--bg);border:1px solid var(--line);border-radius:var(--r);
+  color:var(--ink);font-family:var(--body);font-size:15px;padding:13px 14px;
+  min-height:48px;width:100%;
+}
+.f-field textarea{min-height:110px;resize:vertical}
+.f-field input:focus,.f-field select:focus,.f-field textarea:focus{outline:none;border-color:var(--red)}
+.f-field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238E8779' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.form .btn{margin-top:6px;width:100%;padding:16px}
+.f-note{font-size:12px;color:var(--mut);line-height:1.55;text-align:center}
+.f-note b{color:var(--ink)}
+.steps{list-style:none;margin-top:26px;display:flex;flex-direction:column;gap:18px}
+.steps li{display:flex;gap:16px;align-items:flex-start}
+.steps .n{
+  flex:none;font-family:var(--display);font-size:19px;color:var(--red);
+  width:40px;height:40px;border:1px solid var(--line);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;background:var(--panel);
+}
+.steps p{color:var(--mut);font-size:14.5px;line-height:1.55;padding-top:7px}
+.steps b{color:var(--ink)}
+
+/* ============================================================
+   ONDE FICA
+   ============================================================ */
+.find{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,60px);align-items:start}
+@media(max-width:900px){.find{grid-template-columns:1fr}}
+.map{
+  position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  background:#0E0E11;height:clamp(280px,38vw,420px);width:100%;
+}
+.map #leafmap{width:100%;height:100%}
+.map .leaflet-container{background:#0E0E11;font-family:var(--body)}
+.map .leaflet-control-attribution{background:rgba(8,8,10,.7);color:#5d584e;font-size:9px}
+.map .leaflet-control-attribution a{color:#8E8779}
+.map .leaflet-bar a{background:#15151A;color:#E9E4DA;border-color:#232329}
+.map .leaflet-bar a:hover{background:#1d1d23}
+/* cortina do mapa: nada de terceiro carrega antes do clique (regra 8 / GDPR) */
+.map__gate{
+  position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;text-align:center;padding:26px;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(193,18,31,.10), transparent 62%),
+    repeating-linear-gradient(45deg,#0E0E11 0 14px,#111116 14px 28px);
+}
+.map__gate p{font-size:13px;color:var(--mut);max-width:38ch;line-height:1.55}
+.map__gate b{color:var(--ink);display:block;font-family:var(--display);
+  font-size:20px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px}
+.map__open{
+  position:absolute;left:14px;bottom:14px;z-index:6;
+  background:rgba(8,8,10,.85);border:1px solid var(--line);border-radius:var(--r);
+  color:var(--ink);text-decoration:none;font-size:12.5px;font-weight:600;letter-spacing:.05em;
+  padding:11px 16px;display:inline-flex;gap:8px;align-items:center;min-height:44px;
+}
+.map__open:hover{border-color:var(--mut)}
+.info{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.info__row{
+  padding:20px 24px;border-bottom:1px solid var(--line);background:var(--panel);
+  display:flex;flex-direction:column;gap:5px;
+}
+.info__row:last-child{border-bottom:0}
+.info__k{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.info__v{font-size:15.5px;color:var(--ink);line-height:1.5}
+.info__v a{
+  color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);
+  display:inline-flex;align-items:center;min-height:44px;
+}
+.info__v a:hover{border-color:var(--red)}
+.info__v small{display:block;color:var(--mut);font-size:12.5px;margin-top:3px}
+
+/* ============================================================
+   RODAPE
+   ============================================================ */
+.ftr{border-top:1px solid var(--line);background:var(--bg2);position:relative;z-index:2}
+.ftr__in{display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:center;padding:34px 0}
+.ftr__brand{font-family:var(--black-letter);font-size:23px}
+.ftr__brand span{color:var(--red)}
+.ftr__meta{font-size:12.5px;color:var(--mut);line-height:1.7}
+.ftr__soc{display:flex;flex-wrap:wrap;gap:6px 18px}
+.ftr__soc a{
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);
+  text-decoration:none;font-weight:600;display:inline-flex;align-items:center;min-height:44px;
+}
+.ftr__soc a:hover{color:var(--ink)}
+/* no celular o menu do topo some — estes links sao a unica forma de navegar */
+.ftr__nav{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:16px}
+.ftr__nav a{
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);
+  text-decoration:none;font-weight:600;display:inline-flex;align-items:center;min-height:44px;
+}
+.ftr__nav a:hover{color:var(--ink)}
+.ftr__legal{
+  border-top:1px solid var(--line);padding:16px 0 22px;font-size:11.5px;color:#5d584e;
+  display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:space-between;
+}
+
+/* whatsapp flutuante — sempre alcancavel no celular */
+.fab{
+  position:fixed;right:16px;bottom:16px;z-index:60;
+  width:56px;height:56px;border-radius:50%;background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 28px rgba(0,0,0,.5);text-decoration:none;transition:transform .15s;
+}
+.fab:hover{transform:scale(1.07)}
+.fab svg{width:30px;height:30px;fill:#fff}
+
+/* ---------- movimento reduzido ---------- */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .rev,.tile{opacity:1;transform:none}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ========================= CABECALHO ========================= -->
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a class="logo" href="#top" aria-label="Inkredible Ghiller Tattoo — back to top">
+      <span class="logo__mark">Inkredible <span>Ghiller</span></span>
+      <span class="logo__sub">Tattoo · Est 2012</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#work">The Work</a>
+      <a href="#spot">Rent a Spot</a>
+      <a href="#artist">The Studio</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#find">Find Us</a>
+    </nav>
+    <a class="btn" href="#start">Start your tattoo</a>
+  </div>
+</header>
+
+<!-- ========================= TOPO ========================= -->
+<section class="hero" id="top">
+  <div class="hero__bg"><img src="img/hero.webp" alt="Black and grey tattoo work at Inkredible Ghiller Tattoo" fetchpriority="high" width="1600" height="1063"></div>
+  <div class="wrap hero__in">
+    <p class="hero__est">Est. <b>2012</b> — St Paul's Bay, Malta</p>
+    <h1 class="h1">Colour and<br><span class="stroke">black &amp; grey</span></h1>
+    <p class="hero__tag">Custom tattoos by <b>Joseph Ghiller</b> on Mosta Road, St Paul's Bay — the same studio since 2012. Big realism pieces, colour work, portraits and heraldry.</p>
+    <div class="hero__cta">
+      <a class="btn" href="#start">Start your tattoo</a>
+      <a class="btn btn--ghost" href="#work">See the work</a>
+    </div>
+    <div class="hero__proof">
+      <span class="chip"><span class="star">★</span> <b>4.7</b>&nbsp;· 89 Google reviews</span>
+      <span class="chip"><b>100%</b>&nbsp;recommend on Facebook</span>
+      <span class="chip">Mon–Sat · 10:00–19:00</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FAIXA CORRENDO ========================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" id="mqTrack">
+    <span class="marquee__item">Black &amp; Grey Realism</span>
+    <span class="marquee__item">Colour Work</span>
+    <span class="marquee__item">Portraits</span>
+    <span class="marquee__item">Heraldry &amp; Crests</span>
+    <span class="marquee__item">Knights &amp; Maltese</span>
+    <span class="marquee__item">Guest Artists</span>
+  </div>
+</div>
+
+<!-- ========================= PORTFOLIO ========================= -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="drawer-head rev">
+      <div class="eyebrow">Portfolio</div>
+      <h2 class="h2">Out of the <em>drawer</em></h2>
+      <p class="lead">Real work on real clients, straight from the studio. Tap a style to filter.</p>
+      <div class="drawer-slot" aria-hidden="true"></div>
+      <div class="drawer-note"><span>Inkredible Ghiller — studio archive</span><span>St Paul's Bay · MT</span></div>
+    </div>
+
+    <div class="filters rev" role="group" aria-label="Filter by style">
+      <button class="fpill" aria-pressed="true"  data-f="all">All work</button>
+      <button class="fpill" aria-pressed="false" data-f="bg">Black &amp; Grey</button>
+      <button class="fpill" aria-pressed="false" data-f="por">Portraits</button>
+      <button class="fpill" aria-pressed="false" data-f="col">Colour</button>
+      <button class="fpill" aria-pressed="false" data-f="her">Heraldry &amp; Knights</button>
+    </div>
+
+    <div class="grid" id="grid"><figure class="tile" data-s="bg"><img src="img/g34.webp" alt="Norse back piece — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Norse back piece</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="her"><img src="img/g17.webp" alt="Family crest — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Family crest</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="bg"><img src="img/g44.webp" alt="Kraken across the ribs — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="639" height="639"><figcaption class="tile__tag"><span>Kraken across the ribs</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="col"><img src="img/g36.webp" alt="Green dragon — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Green dragon</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg"><img src="img/g31.webp" alt="Knight in full armour — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Knight in full armour</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="col"><img src="img/g55.webp" alt="Geisha — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Geisha</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg"><img src="img/g30.webp" alt="Lighthouse in the storm — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Lighthouse in the storm</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="her"><img src="img/g19.webp" alt="Maltese cross and helmet — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Maltese cross and helmet</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="col"><img src="img/g42.webp" alt="Roses, red and grey — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Roses, red and grey</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="por"><img src="img/g26.webp" alt="Portrait on the chest — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="639" height="639"><figcaption class="tile__tag"><span>Portrait on the chest</span><i>Portrait</i></figcaption></figure>
+<figure class="tile" data-s="bg"><img src="img/g22.webp" alt="Eagle and compass sleeve — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Eagle and compass sleeve</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="col"><img src="img/g63.webp" alt="Buddha — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Buddha</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="her"><img src="img/g18.webp" alt="Maple leaf shield — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Maple leaf shield</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="por"><img src="img/g15.webp" alt="Portrait in black &amp; grey — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="603" height="603"><figcaption class="tile__tag"><span>Portrait in black &amp; grey</span><i>Portrait</i></figcaption></figure>
+<figure class="tile" data-s="col"><img src="img/g53.webp" alt="The reaper — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>The reaper</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg"><img src="img/g06.webp" alt="Anubis and the knight — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="639" height="639"><figcaption class="tile__tag"><span>Anubis and the knight</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="por"><img src="img/g61.webp" alt="Catrina — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Catrina</span><i>Portrait</i></figcaption></figure>
+<figure class="tile" data-s="her"><img src="img/g21.webp" alt="Knight's armour sleeve — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Knight's armour sleeve</span><i>Heraldry</i></figcaption></figure>
+<figure class="tile" data-s="col"><img src="img/g62.webp" alt="Lily — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Lily</span><i>Colour</i></figcaption></figure>
+<figure class="tile" data-s="bg"><img src="img/g12.webp" alt="Palm trees on the calf — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Palm trees on the calf</span><i>Black &amp; Grey</i></figcaption></figure>
+<figure class="tile" data-s="por"><img src="img/g25.webp" alt="Portrait — tattoo at Inkredible Ghiller Tattoo, St Paul's Bay" loading="lazy" decoding="async" width="640" height="640"><figcaption class="tile__tag"><span>Portrait</span><i>Portrait</i></figcaption></figure></div>
+
+    <p class="grid-note">The full archive lives on <a href="https://www.instagram.com/inkredible_ghiller_tattoo/" target="_blank" rel="noopener noreferrer">Instagram @inkredible_ghiller_tattoo</a> and on <a href="https://www.facebook.com/ghillertattoo/" target="_blank" rel="noopener noreferrer">Facebook</a>.</p>
+  </div>
+</section>
+
+<!-- ========================= ALUGAR CADEIRA ========================= -->
+<section class="sec band" id="spot">
+  <div class="wrap band__in">
+    <div class="band__ph rev">
+      <img src="img/spot.webp" alt="Work in progress at Inkredible Ghiller Tattoo studio" loading="lazy" decoding="async">
+      <span class="band__stamp">For tattoo artists</span>
+    </div>
+    <div class="rev">
+      <div class="eyebrow">Rent a spot</div>
+      <h2 class="h2">Be your<br><em>own boss</em></h2>
+      <p class="lead">A chair in a working studio on Mosta Road, for a simple monthly fee. You keep your own clients, your own books and your own name.</p>
+      <ul class="checks">
+        <li><b>A professional environment, already running.</b> Reception, equipment and footfall of a studio that has been open since 2012.</li>
+        <li><b>You stay independent.</b> The spot is yours for a monthly fee — no commission split, no employment.</li>
+        <li><b>Guest artists come through every season.</b> Recent visitors include TommyD and DOA Tattoos, so the studio is used to hosting.</li>
+      </ul>
+      <div class="hero__cta"><a class="btn" id="spotCta" href="https://wa.me/35699896698" target="_blank" rel="noopener noreferrer">Ask about a spot</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= O ESTUDIO ========================= -->
+<section class="sec" id="artist">
+  <div class="wrap artist">
+    <div class="artist__ph rev"><img src="img/studio.webp" alt="Large black and grey piece by Joseph Ghiller" loading="lazy" decoding="async"></div>
+    <div class="rev">
+      <div class="eyebrow">The studio</div>
+      <h2 class="h2">Joseph <em>Ghiller</em></h2>
+      <p class="lead">Same address on <b>Mosta Road</b> for over a decade. The studio works in <b>colour and in black &amp; grey</b>, takes on full sleeves and back pieces, and brings in guest artists through the season.</p>
+      <ul class="timeline">
+        <li><b>2012</b> — the studio is already running on Mosta Road; a visitor names it in a Malta forum that July.</li>
+        <li><b>Colour and black &amp; grey</b> — the two things the studio says it takes most pride in, and the portfolio backs it.</li>
+        <li><b>Big work</b> — sleeves, back pieces and legs, built over several sessions.</li>
+        <li><b>Guest artists</b> — TommyD, DOA Tattoos and others come through for limited runs.</li>
+        <li><b>A second chair</b> — the studio rents space to independent artists.</li>
+      </ul>
+      <blockquote class="quote">"Feel at home when visiting us. Our pride is Colour and Black and Grey Tattoos — we present the customer with various suggestions and proposals."<br><small style="font-style:normal;color:var(--mut);font-size:12px">— the studio's own description</small></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= AVALIACOES ========================= -->
+<section class="sec band" id="reviews">
+  <div class="wrap">
+    <div class="rev-head rev">
+      <div>
+        <div class="eyebrow">Reviews</div>
+        <h2 class="h2">Word of <em>mouth</em></h2>
+      </div>
+      <div class="score">
+        <span class="score__n">4.7</span>
+        <span class="score__d"><span class="star">★★★★★</span><br>89 reviews on Google<br>100% recommend on Facebook</span>
+      </div>
+    </div>
+    <div class="rcards">
+      <article class="rcard rev">
+        <span class="star">★★★★★</span>
+        <p>"Had a great experience. Really friendly staff from the beginning, listened to what we wanted and suggested things that could improve the design/placement. Very obviously knowledgable!"</p>
+        <footer>Client review · Google</footer>
+      </article>
+      <article class="rcard rev">
+        <span class="star">★★★★★</span>
+        <p>"There is such a great vibe in this shop! Which leaves you feeling comfortable and calm."</p>
+        <footer>Client review · Google</footer>
+      </article>
+      <article class="rcard rev">
+        <span class="star">★★★★★</span>
+        <p>"Was an absolutely amazing experience, could not recommend Joseph and his team highly enough."</p>
+        <footer>Client review · Google</footer>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= COMECAR ========================= -->
+<section class="sec start" id="start">
+  <div class="wrap start__in">
+    <div class="rev">
+      <div class="eyebrow">Start your tattoo</div>
+      <h2 class="h2">Tell us<br><em>your idea</em></h2>
+      <p class="lead">No booking through the site and no form stored anywhere. This just <b>writes your WhatsApp message for you</b> — you hit send, the studio answers.</p>
+      <ol class="steps">
+        <li><span class="n">1</span><p><b>Describe your idea</b> — style, placement, size. Rough is fine.</p></li>
+        <li><span class="n">2</span><p><b>Send it on WhatsApp.</b> You talk to the studio directly — no middleman.</p></li>
+        <li><span class="n">3</span><p><b>Design &amp; session.</b> The piece gets drawn and you book a slot on Mosta Road.</p></li>
+      </ol>
+    </div>
+    <form class="form rev" id="ideaForm" novalidate>
+      <div class="f-row">
+        <div class="f-field">
+          <label for="fName">Your name</label>
+          <input id="fName" type="text" autocomplete="name" placeholder="e.g. Maya">
+        </div>
+        <div class="f-field">
+          <label for="fStyle">Style</label>
+          <select id="fStyle">
+            <option>Black &amp; Grey Realism</option>
+            <option>Colour</option>
+            <option>Portrait</option>
+            <option>Heraldry / Crest</option>
+            <option>Lettering</option>
+            <option>Cover-up / rework</option>
+            <option selected>Not sure yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-row">
+        <div class="f-field">
+          <label for="fPlace">Placement</label>
+          <input id="fPlace" type="text" placeholder="e.g. forearm, calf, back">
+        </div>
+        <div class="f-field">
+          <label for="fSize">Size</label>
+          <select id="fSize">
+            <option>Small — up to 10 cm</option>
+            <option selected>Medium — 10 to 20 cm</option>
+            <option>Large — sleeve / back piece</option>
+            <option>Not sure</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-field">
+        <label for="fIdea">Your idea</label>
+        <textarea id="fIdea" placeholder="Tell us what you have in mind — references, meaning, anything helps."></textarea>
+      </div>
+      <div class="f-field">
+        <label for="fWhen">Preferred days <span style="text-transform:none;letter-spacing:0;color:#5d584e">(optional)</span></label>
+        <input id="fWhen" type="text" placeholder="e.g. weekday afternoons">
+      </div>
+      <button class="btn" type="submit">Open WhatsApp with my idea</button>
+      <p class="f-note"><b>Nothing is stored.</b> This site keeps no data and uses no cookies — the message opens in your own WhatsApp and you decide to send it.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ========================= ONDE FICA ========================= -->
+<section class="sec" id="find">
+  <div class="wrap">
+    <div class="rev">
+      <div class="eyebrow">Find us</div>
+      <h2 class="h2">St Paul's <em>Bay</em></h2>
+    </div>
+    <div class="find" style="margin-top:38px">
+      <div class="map rev" aria-label="Where Inkredible Ghiller Tattoo is">
+        <div id="leafmap"></div>
+        <div class="map__gate" id="mapGate">
+          <p><b>Mosta Road</b>Buġibba, St Paul's Bay</p>
+          <button class="btn btn--ghost" id="mapLoad" type="button">Show the map</button>
+          <p style="font-size:11.5px">The map is loaded from OpenStreetMap only after you ask for it, so nothing about you leaves this page on its own.</p>
+        </div>
+        <a class="map__open" href="https://www.google.com/maps/search/?api=1&amp;query=35.9467465,14.408689" target="_blank" rel="noopener noreferrer">Open in Google Maps ↗</a>
+      </div>
+      <div class="info rev">
+        <div class="info__row">
+          <span class="info__k">Studio</span>
+          <span class="info__v">Triq il-Mosta (Mosta Road)<br>Buġibba, San Pawl il-Baħar<br>SPB 3112, Malta</span>
+        </div>
+        <div class="info__row">
+          <span class="info__k">Hours</span>
+          <span class="info__v">Monday – Saturday · 10:00 – 19:00<small>Closed Sunday · message first to check a slot</small></span>
+        </div>
+        <div class="info__row">
+          <span class="info__k">WhatsApp / Phone</span>
+          <span class="info__v"><a href="tel:+35699896698">+356 9989 6698</a></span>
+        </div>
+        <div class="info__row">
+          <span class="info__k">Email</span>
+          <span class="info__v"><a href="mailto:ghilltat2@yahoo.co.uk">ghilltat2@yahoo.co.uk</a></span>
+        </div>
+        <div class="info__row">
+          <span class="info__k">Social</span>
+          <span class="info__v"><a href="https://www.instagram.com/inkredible_ghiller_tattoo/" target="_blank" rel="noopener noreferrer">Instagram</a> &nbsp;·&nbsp; <a href="https://www.facebook.com/ghillertattoo/" target="_blank" rel="noopener noreferrer">Facebook</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= RODAPE ========================= -->
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__in">
+      <div>
+        <div class="ftr__brand">Inkredible <span>Ghiller</span></div>
+        <p class="ftr__meta">Custom tattoo studio · Est. 2012<br>Triq il-Mosta, Buġibba, St Paul's Bay, Malta</p>
+        <nav class="ftr__nav" aria-label="Sections">
+          <a href="#work">The Work</a>
+          <a href="#spot">Rent a Spot</a>
+          <a href="#artist">The Studio</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#find">Find Us</a>
+        </nav>
+      </div>
+      <div class="ftr__soc">
+        <a href="https://www.instagram.com/inkredible_ghiller_tattoo/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.facebook.com/ghillertattoo/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="mailto:ghilltat2@yahoo.co.uk">Email</a>
+        <a href="tel:+35699896698">Call</a>
+      </div>
+    </div>
+    <div class="ftr__legal">
+      <span>© <span id="yy"></span> Inkredible Ghiller Tattoo · Joseph Ghiller · St Paul's Bay, Malta</span>
+      <span>This site uses no cookies and collects no personal data.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="fab" id="fabWa" href="https://wa.me/35699896698" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C9.4 3 4 8.3 4 14.9c0 2.6.8 5 2.3 7L4 29l7.3-2.2c1.5.8 3.1 1.2 4.7 1.2 6.6 0 12-5.3 12-11.9C28 8.3 22.6 3 16 3zm0 21.8c-1.5 0-3-.4-4.3-1.1l-.3-.2-4.3 1.3 1.3-4.1-.2-.3c-1.4-1.7-2.1-3.8-2.1-5.9 0-5.5 4.5-9.9 10-9.9s10 4.4 10 9.9-4.5 10.3-10.1 10.3zm5.5-7.5c-.3-.2-1.8-.9-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.6.1-.2 0-.4 0-.6-.1-.2-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.6 4.9.8.3 1.4.5 1.9.7.8.2 1.5.2 2 .1.6-.1 1.8-.8 2.1-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+
+<script>
+/* ============================================================
+   CONFIG — os dados do estudio ficam aqui
+   ============================================================ */
+const CONFIG = {
+  whatsapp: "35699896698",          // numero DO DONO (regra 3)
+  name: "Joseph",
+  lat: 35.9467465,
+  lon: 14.408689
+};
+
+/* ============================================================
+   INTEGRACOES — TUDO DESLIGADO (regra 6 + regra 8 / GDPR)
+   Malta e Uniao Europeia. Ligar qualquer um destes passa a
+   tratar dado pessoal: antes de mudar para true, e obrigatorio
+   ter banner de consentimento com Aceitar E Recusar igualmente
+   faceis, e Politica de Privacidade em ingles.
+   Ver 0-Metodo-e-Modelos/checklist-clientes-europa.md
+   ============================================================ */
+const INTEGRACOES = {
+  ga4:       { ativo:false, id:"" },   // Google Analytics
+  metaPixel: { ativo:false, id:"" },   // Pixel do Facebook
+  formspree: { ativo:false, id:"" },   // formulario que salva
+  planilha:  { ativo:false, url:"" },  // Google Sheets
+  agenda:    { ativo:false, url:"" }   // agendamento online
+};
+
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+/* ---------- ano do rodape ---------- */
+$("#yy").textContent = new Date().getFullYear();
+
+/* ---------- mensagem pronta em cada botao de WhatsApp (regra 5) ----------
+   O href ja vem COMPLETO do HTML. O JS so acrescenta o texto pre-escrito.
+   Assim, se o JS falhar, o botao continua abrindo a conversa -- so sem a
+   mensagem pronta. Antes eu montava o link inteiro aqui e o botao ficava
+   com href="#" quando o script nao rodava. */
+(() => {
+  const wa = (txt) => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(txt)}`;
+  $("#fabWa").href  = wa(`Hi ${CONFIG.name}! I found your website and I'd like to talk about a tattoo.`);
+  $("#spotCta").href = wa(`Hi ${CONFIG.name}! I'm a tattoo artist — I saw you rent a spot at the studio. Could you tell me the monthly fee and if anything is free?`);
+})();
+
+/* ---------- faixa correndo: duplica a trilha para o laco nao ter emenda ---------- */
+(() => {
+  const t = $("#mqTrack");
+  t.innerHTML += t.innerHTML;
+})();
+
+/* ---------- aparecer ao rolar ----------
+   threshold 0: no celular as secoes ficam mais altas que a tela —
+   um pixel visivel ja basta para revelar. */
+(() => {
+  const show = el => el.classList.add("in");
+  if (!("IntersectionObserver" in window)) { $$(".rev,.tile").forEach(show); return; }
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0, rootMargin: "0px 0px -5% 0px" });
+  $$(".rev").forEach(el => io.observe(el));
+
+  /* as fotos entram escalonadas, como se fossem tiradas da gaveta */
+  const gio = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const tiles = $$("#grid .tile:not(.hidden)");
+      tiles.forEach((t, i) => setTimeout(() => t.classList.add("in"), Math.min(i * 70, 900)));
+      gio.disconnect();
+    });
+  }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+  gio.observe($("#grid"));
+
+  /* rede de seguranca: conteudo que nunca aparece e pior que animacao perdida */
+  window.addEventListener("load", () => setTimeout(() => {
+    $$(".rev:not(.in),.tile:not(.in)").forEach(el => {
+      if (el.getBoundingClientRect().top < window.innerHeight) show(el);
+    });
+  }, 900));
+})();
+
+/* ---------- filtro do portfolio ---------- */
+(() => {
+  const pills = $$(".fpill");
+  pills.forEach(p => p.addEventListener("click", () => {
+    pills.forEach(x => x.setAttribute("aria-pressed", x === p));
+    const f = p.dataset.f;
+    $$("#grid .tile").forEach(t => {
+      const match = f === "all" || t.dataset.s === f;
+      t.classList.toggle("hidden", !match);
+      if (match) t.classList.add("in");
+    });
+  }));
+})();
+
+/* ---------- formulario -> WhatsApp (nada e guardado) ---------- */
+$("#ideaForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const v = id => ($(id).value || "").trim();
+  const name  = v("#fName"), style = v("#fStyle"), place = v("#fPlace"),
+        size  = v("#fSize"), idea  = v("#fIdea"),  when  = v("#fWhen");
+  const lines = [
+    `Hi ${CONFIG.name}! I'd like to start a tattoo project.`,
+    name  ? `• Name: ${name}` : null,
+    `• Style: ${style}`,
+    place ? `• Placement: ${place}` : null,
+    `• Size: ${size}`,
+    idea  ? `• The idea: ${idea}` : null,
+    when  ? `• Preferred days: ${when}` : null,
+    `(Sent from your website)`
+  ].filter(Boolean);
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`,
+              "_blank", "noopener");
+});
+
+/* ---------- mapa: so carrega DEPOIS do clique ----------
+   O site do DnA puxava o Leaflet do unpkg e os tiles do CartoDB no
+   carregamento da pagina. Isso manda o IP de quem visita para dois
+   servidores de fora antes de a pessoa clicar em nada — em Malta,
+   que e UE, isso e tratamento de dado pessoal sem base legal.
+   Aqui nada de terceiro e pedido ate o visitante apertar o botao. */
+(() => {
+  const bt = $("#mapLoad"), gate = $("#mapGate"), el = $("#leafmap");
+  if (!bt) return;
+  const carregar = () => {
+    bt.disabled = true;
+    bt.textContent = "Loading…";
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    document.head.appendChild(css);
+    const js = document.createElement("script");
+    js.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    js.onload = () => {
+      const map = L.map("leafmap", {
+        center:[CONFIG.lat, CONFIG.lon], zoom:16, zoomControl:true, scrollWheelZoom:true
+      });
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        subdomains:"abcd", maxZoom:20, attribution:"&copy; OpenStreetMap &copy; CARTO"
+      }).addTo(map);
+      const pin = L.divIcon({ className:"", iconSize:[30,40], iconAnchor:[15,40],
+        html:'<svg width="30" height="40" viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg"><path fill="#C1121F" stroke="#0B0B0D" stroke-width="1.2" d="M12 1C6.8 1 3 4.9 3 9.9 3 16.7 12 31 12 31s9-14.3 9-21.1C21 4.9 17.2 1 12 1z"/><circle cx="12" cy="10" r="3.2" fill="#0B0B0D"/></svg>' });
+      L.marker([CONFIG.lat, CONFIG.lon], {icon:pin}).addTo(map);
+      gate.remove();
+      const fix = () => map.invalidateSize();
+      requestAnimationFrame(fix);
+      if (window.ResizeObserver) new ResizeObserver(fix).observe(el);
+    };
+    js.onerror = () => { bt.disabled = false; bt.textContent = "Map unavailable — open in Google Maps"; };
+    document.head.appendChild(js);
+  };
+  bt.addEventListener("click", carregar);
+})();
+</script>
+</body>
+</html>
