@@ -9,7 +9,7 @@
 <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%230B0B0D"/><text x="32" y="43" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="%23E9E4DA" text-anchor="middle">G</text><rect x="14" y="48" width="36" height="3" fill="%23C1121F"/></svg>'>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Pirata+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Pinyon+Script&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 /* ============================================================
@@ -36,7 +36,13 @@
   --red-d:#8f0e17;
   --display:'Anton', Impact, sans-serif;
   --body:'Inter', system-ui, sans-serif;
-  --black-letter:'Pirata One', Georgia, serif;
+  /* script cursivo, nao gotica: a logo real do estudio e um script de
+     tatuagem com floreio no G e no T. A Pirata One (gotica) veio junto
+     com o design do DnA, onde fazia sentido -- dark e horror. Aqui era
+     emprestada. Comparei Pinyon, Great Vibes, Monsieur La Doulaise,
+     Mrs Saint Delafield e Tangerine lado a lado contra a logo: a Pinyon
+     tem a mesma estrutura copperplate E continua legivel a 27px. */
+  --script:'Pinyon Script', 'Brush Script MT', cursive;
   --max:1200px;
   --pad:clamp(20px,5vw,52px);
   --r:6px;
@@ -90,7 +96,7 @@ body::before{
 }
 .hdr__in{display:flex;align-items:center;justify-content:space-between;gap:18px;height:64px}
 .logo{display:flex;align-items:baseline;gap:10px;text-decoration:none;min-height:44px;align-content:center;flex-wrap:wrap}
-.logo__mark{font-family:var(--black-letter);font-size:27px;color:var(--ink);line-height:1;white-space:nowrap}
+.logo__mark{font-family:var(--script);font-size:32px;color:var(--ink);line-height:1.1;white-space:nowrap}
 .logo__mark span{color:var(--red)}
 .logo__sub{font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
 .nav{display:flex;gap:26px}
@@ -115,10 +121,10 @@ body::before{
 /* celular: nome e mais longo que o do DnA, entao encolhe antes de espremer */
 @media(max-width:560px){
   .logo__sub{display:none}
-  .logo__mark{font-size:22px}
+  .logo__mark{font-size:26px}
   .hdr .btn{padding:10px 14px;font-size:12px}
 }
-@media(max-width:380px){.logo__mark{font-size:19px}}
+@media(max-width:380px){.logo__mark{font-size:23px}}
 
 /* ============================================================
    TOPO
@@ -140,7 +146,7 @@ body::before{
 }
 .hero__in{position:relative;width:100%}
 .hero__est{
-  font-family:var(--black-letter);font-size:clamp(19px,2.6vw,26px);color:var(--mut);
+  font-family:var(--script);font-size:clamp(23px,3vw,31px);color:var(--mut);
   margin-bottom:6px;
 }
 .hero__est b{color:var(--red);font-weight:400}
@@ -205,29 +211,34 @@ body::before{
 .fpill:hover{color:var(--ink);border-color:var(--mut)}
 @media(max-width:680px){.fpill{min-height:44px}}
 .fpill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-/* MOSAICO, nao grade de quadro fixo.
-   As fotos dele vao de 0,51 (bem alta) a 1,90 (deitada). Com quadro de
-   tamanho fixo so havia escolha ruim: cortar a tatuagem, ou deixar tarja
-   preta grossa em volta. Em coluna, cada foto fica com a altura que tem.
-   columns e CSS puro -- nenhuma biblioteca de mosaico (regra 1). */
-.grid{columns:4;column-gap:14px}
-@media(max-width:980px){.grid{columns:3}}
-@media(max-width:680px){.grid{columns:2}}
-@media(max-width:420px){.grid{columns:1}}
+/* GRADE ALINHADA, quadro do mesmo tamanho.
+   ⚠️ Passei pelo mosaico em coluna antes disto e voltei atras: com filtro
+   ligado sobravam 7 fotos em 4 colunas, a ultima coluna terminava sozinha e
+   ficava um buraco na tela. O Joao mandou print. A grade preenche da
+   esquerda para a direita: a ultima fileira so fica com menos itens, o que
+   parece normal.
+   Das 21 fotos, 10 sao quadradas e 8 sao 4:5 -- nenhuma proporcao manda.
+   Escolhi 4:5 porque tatuagem quase sempre e vertical (braco, perna), e
+   porque as 8 de 4:5 preenchem exato. As outras ganham uma tarja fina do
+   lado, que com o fundo escuro le como moldura, nao como defeito. */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px){.grid{grid-template-columns:repeat(2,1fr)}}
 .tile{
-  position:relative;border-radius:var(--r);overflow:hidden;background:var(--panel);
+  position:relative;border-radius:var(--r);overflow:hidden;
+  background:#0E0E11;                      /* moldura, nao tarja */
   border:1px solid var(--line);
-  /* sem aspect-ratio: a altura vem da foto */
-  break-inside:avoid;margin:0 0 14px;display:block;
+  aspect-ratio:4/5;                        /* todos do mesmo tamanho */
   opacity:0;transform:translateY(-22px);
   transition:opacity .6s ease,transform .6s cubic-bezier(.22,.9,.3,1.1),border-color .2s;
 }
 .tile.in{opacity:1;transform:none}
 .tile:hover{border-color:var(--mut)}
-/* height:auto -- a foto manda na altura do quadro. Nada de object-fit
-   cortando ou deixando tarja: o quadro tem exatamente o tamanho da foto. */
+/* contain: a foto inteira dentro do quadro, nunca cortada. O que sobra fica
+   com o fundo do .tile. Medido antes de escolher: das 21 fotos, 8 preenchem
+   exato (4:5), 10 ficam com ~10% de tarja nos lados e 3 com 4 a 7% em cima. */
 .tile img{
-  width:100%;height:auto;display:block;
+  width:100%;height:100%;object-fit:contain;display:block;
   transition:filter .5s ease;
   filter:grayscale(12%);
 }
@@ -328,7 +339,9 @@ body::before{
 .artist{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,70px);align-items:center}
 @media(max-width:860px){.artist{grid-template-columns:1fr}}
 .artist__ph{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
-.artist__ph img{width:100%;height:auto;object-fit:contain;filter:grayscale(100%) contrast(1.05)}
+/* era grayscale(100%): herdado do DnA, que e realismo preto-e-cinza.
+   A peca do Joseph aqui tem saturacao 27 -- o filtro apagava cor real. */
+.artist__ph img{width:100%;height:auto;object-fit:contain;filter:grayscale(25%) contrast(1.05)}
 .artist__ph::after{
   content:"INKREDIBLE GHILLER";position:absolute;right:14px;bottom:12px;
   font-family:var(--display);font-size:12px;letter-spacing:.24em;color:rgba(233,228,218,.8);
@@ -440,7 +453,7 @@ body::before{
    ============================================================ */
 .ftr{border-top:1px solid var(--line);background:var(--bg2);position:relative;z-index:2}
 .ftr__in{display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:center;padding:34px 0}
-.ftr__brand{font-family:var(--black-letter);font-size:23px}
+.ftr__brand{font-family:var(--script);font-size:28px;line-height:1.2}
 .ftr__brand span{color:var(--red)}
 .ftr__meta{font-size:12.5px;color:var(--mut);line-height:1.7}
 .ftr__soc{display:flex;flex-wrap:wrap;gap:6px 18px}
@@ -486,7 +499,7 @@ body::before{
 <header class="hdr">
   <div class="wrap hdr__in">
     <a class="logo" href="#top" aria-label="Inkredible Ghiller Tattoo — back to top">
-      <span class="logo__mark">Inkredible <span>Ghiller</span></span>
+      <span class="logo__mark"><span>Inkredible</span> Ghiller</span>
       <span class="logo__sub">Tattoo · Est 2012</span>
     </a>
     <nav class="nav" aria-label="Main">
@@ -754,7 +767,7 @@ body::before{
   <div class="wrap">
     <div class="ftr__in">
       <div>
-        <div class="ftr__brand">Inkredible <span>Ghiller</span></div>
+        <div class="ftr__brand"><span>Inkredible</span> Ghiller</div>
         <p class="ftr__meta">Custom tattoo studio · Est. 2012<br>Triq il-Mosta, Buġibba, St Paul's Bay, Malta</p>
         <nav class="ftr__nav" aria-label="Sections">
           <a href="#work">The Work</a>
